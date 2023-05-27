@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGI Forecaster</title>
+    <style>
+      body {
+        background-color: #111;
+        color: #eee;
+        font-family: sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .element {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        margin-bottom: 10px;
+      }
+      .element .title {
+        flex-basis: 70%;
+      }
+      .element input[type="range"] {
+        flex-basis: 20%;
+      }
+      .element .percentage {
+        flex-basis: 10%;
+        text-align: right;
+      }
+      #result {
+        font-size: 2em;
+        text-align: center;
+        width: 80%;
+      }
+      footer {
+        text-align: center;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AGI Forecaster</h1>
+    <p>Welcome to AGI Forecaster! This website allows you to explore different scenarios for AGI progress.</p>
+    <div class="container">
+      <div class="element">
+        <span class="title">We discover fundamental algorithmic improvements enabling DNNs to perform brainlike functions</span>
+        <input type="range" min="0" max="100" value="60">
+        <span class="percentage">60%</span>
+      </div>
+      <div class="element">
+        <span class="title">We quickly figure out how to train DNNs for human tasks without active learning</span>
+        <input type="range" min="0" max="100" value="33">
+        <span class="percentage">33%</span>
+      </div>
+      <div class="element">
+        <span class="title">AGI inference costs drop well below $25/hr per human equivalent</span>
+        <input type="range" min="0" max="100" value="16">
+        <span class="percentage">16%</span>
+      </div>
+      <div class="element">
+        <span class="title">We invent and scale cheap and capable robot bodies, or robot bodies are not necessary for AGI to be transformative</span>
+        <input type="range" min="0" max="100" value="60">
+        <span class="percentage">60%</span>
+      </div>
+      <div class="element">
+        <span class="title">We quickly scale up production of compute and energy</span>
+        <input type="range" min="0" max="100" value="46">
+        <span class="percentage">46%</span>
+      </div>
+      <div class="element">
+        <span class="title">Humans don't purposely slow AI progress after seeing the trajectory it's on</span>
+        <input type="range" min="0" max="100" value="70">
+        <span class="percentage">70%</span>
+      </div>
+      <div class="element">
+        <span class="title">AGIs don't purposely slow AI progress after seeing the trajectory it's on</span>
+        <input type="range" min="0" max="100" value="90">
+        <span class="percentage">90%</span>
+      </div>
+      <div class="element">
+        <span class="title">AGI progress is not derailed by the Taiwan dispute, or large-scale war between great powers</span>
+        <input type="range" min="0" max="100" value="70">
+        <span class="percentage">70%</span>
+      </div>
+      <div class="element">
+        <span class="title">AGI progress is not derailed by a severe natural or engineered pandemic</span>
+        <input type="range" min="0" max="100" value="90">
+        <span class="percentage">90%</span>
+      </div>
+      <div class="element">
+        <span class="title">AGI progress is not derailed by other forms of societal disruption (e.g. a major economic depression)</span>
+        <input type="range" min="0" max="100" value="90">
+        <span class="percentage">90%</span>
+      </div>
+    </div>
+    <p>Joint probability: <span id="result">0.3%</span></p>
+
+    <script>
+      const probabilities = document.querySelectorAll('input[type=range]');
+      const result = document.querySelector('#result');
+      
+      function updateResult() {
+        let product = 1;
+        probabilities.forEach(probability => {
+          product *= probability.value / 100;
+          probability.nextElementSibling.textContent = probability.value + '%';
+        });
+        result.textContent = (product * 100).toFixed(1) + '%';
+      }
+      
+      probabilities.forEach(probability => {
+        probability.addEventListener('input', updateResult);
+      });
+      
+      updateResult();
+    </script>
+
+    <footer>Authored by Bing</footer>
+  </body>
+</html>

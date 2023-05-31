@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGI Forecaster</title>
+    <title>Forecasting AGI</title>
     <style>
+      .wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .chart-container {
+        display: block;
+        color: #eee;
+      }
+      .chart {
+      }
       body {
         background-color: #111;
         color: #eee;
@@ -22,7 +30,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 80%;
+        width: 100%;
         margin-bottom: 10px;
       }
       .element .title {
@@ -38,91 +46,342 @@
       #result {
         font-size: 2em;
         text-align: center;
-        width: 80%;
+        width: 100%;
       }
       footer {
         text-align: center;
         margin-top: 20px;
       }
+      .reset-button {
+        display: block;
+        margin: 20px auto;
+      }
     </style>
   </head>
   <body>
-    <h1>AGI Forecaster</h1>
-    <p>Welcome to AGI Forecaster! This website allows you to explore different scenarios for AGI progress.</p>
-    <div class="container">
-      <div class="element">
-        <span class="title">We discover fundamental algorithmic improvements enabling DNNs to perform brainlike functions</span>
-        <input type="range" min="0" max="100" value="60">
-        <span class="percentage">60%</span>
+    <div class="wrapper">
+      <h1>Forecasting AGI</h1>
+      <p>
+        For AGI to do most human work for &lt;$25/hr by 2043, many things must
+        happen. Use this interactive web app to forecast individual events and
+        see what they imply about the likelihood of transformative AGI by 2043.
+      </p>
+      <div class="container">
+        <div class="element">
+          <span class="title">We invent algorithms for transformative AGI</span>
+          <input type="range" min="0" max="100" value="60" />
+          <span class="percentage">60%</span>
+        </div>
+        <div class="element">
+          <span class="title"
+            >We invent a way for AGIs to learn faster than humans</span
+          >
+          <input type="range" min="0" max="100" value="40" />
+          <span class="percentage">40%</span>
+        </div>
       </div>
-      <div class="element">
-        <span class="title">We quickly figure out how to train DNNs for human tasks without active learning</span>
-        <input type="range" min="0" max="100" value="33">
-        <span class="percentage">33%</span>
+      <div class="chart-container">
+        <p>
+          Compute needed by AGI, relative to a human brain (1e20-1e21 FLOPS)
+        </p>
+        <canvas id="chart1" width="550" height="300"></canvas>
+        <p>Compute cost efficiency, relative to 2023 (4e14 FLOPS/$/hr)</p>
+        <canvas id="chart2" width="550" height="150"></canvas>
       </div>
-      <div class="element">
-        <span class="title">AGI inference costs drop well below $25/hr per human equivalent</span>
-        <input type="range" min="0" max="100" value="16">
-        <span class="percentage">16%</span>
+      <div class="container">
+        <div class="element">
+          <span class="title"
+            >AGI inference costs drop below $25/hr (determined by above)</span>
+          <input
+            type="range"
+            id="slider3"
+            min="0"
+            max="100"
+            value="16"
+            disabled
+          />
+          <span class="percentage">16%</span>
+        </div>
+        <div class="element">
+          <span class="title">We invent and scale cheap, quality robots</span>
+          <input type="range" min="0" max="100" value="60" />
+          <span class="percentage">60%</span>
+        </div>
+        <div class="element">
+          <span class="title">We massively scale production of chips and power</span>
+          <input type="range" min="0" max="100" value="46" />
+          <span class="percentage">46%</span>
+        </div>
+        <div class="element">
+          <span class="title">We avoid derailment by human regulation</span>
+          <input type="range" min="0" max="100" value="70" />
+          <span class="percentage">70%</span>
+        </div>
+        <div class="element">
+          <span class="title">We avoid derailment by AI-caused delay</span>
+          <input type="range" min="0" max="100" value="90" />
+          <span class="percentage">90%</span>
+        </div>
+        <div class="element">
+          <span class="title">We avoid derailment from wars (e.g., China invades Taiwan)</span>
+          <input type="range" min="0" max="100" value="70" />
+          <span class="percentage">70%</span>
+        </div>
+        <div class="element">
+          <span class="title">We avoid derailment from pandemics</span>
+          <input type="range" min="0" max="100" value="90" />
+          <span class="percentage">90%</span>
+        </div>
+        <div class="element">
+          <span class="title">We avoid derailment from severe depressions</span>
+          <input type="range" min="0" max="100" value="95" />
+          <span class="percentage">95%</span>
+        </div>
       </div>
-      <div class="element">
-        <span class="title">We invent and scale cheap and capable robot bodies, or robot bodies are not necessary for AGI to be transformative</span>
-        <input type="range" min="0" max="100" value="60">
-        <span class="percentage">60%</span>
-      </div>
-      <div class="element">
-        <span class="title">We quickly scale up production of compute and energy</span>
-        <input type="range" min="0" max="100" value="46">
-        <span class="percentage">46%</span>
-      </div>
-      <div class="element">
-        <span class="title">Humans don't purposely slow AI progress after seeing the trajectory it's on</span>
-        <input type="range" min="0" max="100" value="70">
-        <span class="percentage">70%</span>
-      </div>
-      <div class="element">
-        <span class="title">AGIs don't purposely slow AI progress after seeing the trajectory it's on</span>
-        <input type="range" min="0" max="100" value="90">
-        <span class="percentage">90%</span>
-      </div>
-      <div class="element">
-        <span class="title">AGI progress is not derailed by the Taiwan dispute, or large-scale war between great powers</span>
-        <input type="range" min="0" max="100" value="70">
-        <span class="percentage">70%</span>
-      </div>
-      <div class="element">
-        <span class="title">AGI progress is not derailed by a severe natural or engineered pandemic</span>
-        <input type="range" min="0" max="100" value="90">
-        <span class="percentage">90%</span>
-      </div>
-      <div class="element">
-        <span class="title">AGI progress is not derailed by other forms of societal disruption (e.g. a major economic depression)</span>
-        <input type="range" min="0" max="100" value="90">
-        <span class="percentage">90%</span>
-      </div>
-    </div>
-    <p>Joint probability: <span id="result">0.3%</span></p>
+      <p style="text-align: center">
+        Joint probability: <span id="result">0.3%</span>
+      </p>
+      <button id="resetButton" class="reset-button">Reset</button>
 
-    <script>
-      const probabilities = document.querySelectorAll('input[type=range]');
-      const result = document.querySelector('#result');
-      
-      function updateResult() {
-        let product = 1;
-        probabilities.forEach(probability => {
-          product *= probability.value / 100;
-          probability.nextElementSibling.textContent = probability.value + '%';
+      <script>
+        "use strict";
+
+        // Set up canvas
+        const canvas1 = document.getElementById("chart1");
+        const ctx1 = canvas1.getContext("2d");
+        ctx1.font = "14px Arial";
+        const canvas2 = document.getElementById("chart2");
+        const ctx2 = canvas2.getContext("2d");
+        ctx2.font = "14px Arial";
+
+        // Set up data
+        let data1 = [
+          [
+            "<=1/100,000x",
+            "1/10,000x–1/1,000x",
+            "1/1,000x–1/100x",
+            "1/100x–1/10x",
+            "1/10x–1x",
+            "1x–10x",
+            "10x–100x",
+            "100x–1,000x",
+            "1,000x–10,000x",
+            ">=100,000x",
+          ],
+          [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+          [4.5, 3.5, 2.5, 1.5, 0.5, -0.5, -1.5, -2.5, -3.5, -4.5],
+        ];
+        let data2 = [
+          [
+            "<=1x of 2023",
+            "10x of 2023",
+            "100x of 2023",
+            "1,000x of 2023",
+            ">=10,000x of 2023",
+          ],
+          [0.02, 0.4, 0.5, 0.06, 0.02],
+          [0, 1, 2, 3, 4],
+        ];
+
+        // Set up default data for reset
+        const defaultData1 = JSON.parse(JSON.stringify(data1));
+        const defaultData2 = JSON.parse(JSON.stringify(data2));
+
+        // Bar height based on the maximum number of bars in a chart
+        const barHeight1 = canvas1.height / 10 - 1;
+        const barHeight2 = canvas2.height / 5 - 1;
+
+        // Draw chart
+        function drawChart(canvas, ctx, data, barHeight) {
+          // Clear canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw bars
+          for (let i = 0; i < data[0].length; i++) {
+            const y = i * (canvas.height / data[0].length);
+            const barWidth = data[1][i] * (canvas.width - 200);
+            const x = 160;
+
+            ctx.fillStyle = "#56f";
+            ctx.fillRect(x, y, barWidth, barHeight);
+
+            // Draw circles at the end of bars
+            ctx.beginPath();
+            ctx.arc(
+              x + barWidth,
+              y + barHeight / 2,
+              barHeight / 4,
+              0,
+              2 * Math.PI
+            );
+            ctx.fillStyle = "#56f";
+            ctx.fill();
+
+            // Draw white outline for circles
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Draw labels
+            ctx.fillStyle = "white";
+            ctx.textAlign = "right";
+            ctx.fillText(data[0][i], x - 5, y + barHeight / 2 + 5);
+
+            // Draw bar percentage
+            ctx.textAlign = "left";
+            ctx.fillText(
+              Math.round(data[1][i] * 100) + "%",
+              x + barWidth + 15, // Add extra margin for percentage labels
+              y + barHeight / 2 + 5
+            );
+          }
+        }
+
+        function updateSlider3() {
+          let sumProbability = 0;
+          for (let i = 0; i < data1[0].length; i++) {
+            for (let j = 0; j < data2[0].length; j++) {
+              if (data1[2][i] + data2[2][j] > 5) {
+                sumProbability += data1[1][i] * data2[1][j];
+              }
+            }
+          }
+
+          // Update slider #3 value and percentage based on the sum probability
+          const slider3 = document.getElementById("slider3");
+          const percentage3 = slider3.nextElementSibling;
+          slider3.value = Math.round(sumProbability * 100);
+          percentage3.textContent = slider3.value + "%";
+        }
+
+        drawChart(canvas1, ctx1, data1, barHeight1);
+        drawChart(canvas2, ctx2, data2, barHeight2);
+        updateSlider3();
+
+        // Add event listeners
+        let isDragging = false;
+        let dragIndex = null;
+        let currentCanvas = null;
+        let currentData = null;
+
+        function addEventListeners(canvas, ctx, data, barHeight) {
+          canvas.addEventListener("mousedown", function (e) {
+            isDragging = true;
+            currentCanvas = canvas;
+            currentData = data;
+
+            // Get mouse position
+            const rect = canvas.getBoundingClientRect();
+            const mouseY = e.clientY - rect.top;
+
+            // Determine which bar is being dragged
+            for (let i = 0; i < data[0].length; i++) {
+              if (
+                mouseY > i * (canvas.height / data[0].length) &&
+                mouseY < (i + 1) * (canvas.height / data[0].length)
+              ) {
+                dragIndex = i;
+                break;
+              }
+            }
+          });
+
+          canvas.addEventListener("mousemove", function (e) {
+            if (
+              isDragging &&
+              dragIndex !== null &&
+              currentCanvas === canvas &&
+              currentData === data
+            ) {
+              // Get mouse position
+              const rect = canvas.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left;
+
+              // Update probability
+              data[1][dragIndex] = (mouseX - 160) / (canvas.width - 200);
+
+              // Disallow probabilities from going below 0 or above 1
+              if (data[1][dragIndex] < 0) {
+                data[1][dragIndex] = 0;
+              } else if (data[1][dragIndex] > 1) {
+                data[1][dragIndex] = 1;
+              }
+
+              // Normalize probabilities
+              let totalProbability = 0;
+              for (let i = 0; i < data[1].length; i++) {
+                totalProbability += data[1][i];
+              }
+
+              for (let i = 0; i < data[1].length; i++) {
+                data[1][i] /= totalProbability;
+              }
+
+              // Redraw chart
+              drawChart(canvas, ctx, data, barHeight);
+              updateSlider3();
+              updateResult();
+            }
+          });
+
+          canvas.addEventListener("mouseup", function (e) {
+            isDragging = false;
+            dragIndex = null;
+            currentCanvas = null;
+            currentData = null;
+          });
+        }
+
+        addEventListeners(canvas1, ctx1, data1, barHeight1);
+        addEventListeners(canvas2, ctx2, data2, barHeight2);
+
+        // Add event listener for reset button
+        document
+          .getElementById("resetButton")
+          .addEventListener("click", function () {
+            // Reset data to default values
+            data1 = JSON.parse(JSON.stringify(defaultData1));
+            data2 = JSON.parse(JSON.stringify(defaultData2));
+
+            // Reset sliders to default values
+            const sliders = document.querySelectorAll("input[type=range]");
+            sliders[0].value = 60;
+            sliders[1].value = 40;
+            sliders[2].value = 16;
+            sliders[3].value = 60;
+            sliders[4].value = 46;
+            sliders[5].value = 70;
+            sliders[6].value = 90;
+            sliders[7].value = 70;
+            sliders[8].value = 90;
+            sliders[9].value = 95;
+
+            // Redraw charts and update result
+            drawChart(canvas1, ctx1, data1, barHeight1);
+            drawChart(canvas2, ctx2, data2, barHeight2);
+            updateSlider3();
+            updateResult();
+          });
+
+        const probabilities = document.querySelectorAll("input[type=range]");
+        const result = document.querySelector("#result");
+
+        function updateResult() {
+          let product = 1;
+          probabilities.forEach((probability) => {
+            product *= probability.value / 100;
+            probability.nextElementSibling.textContent =
+              probability.value + "%";
+          });
+          result.textContent = (product * 100).toFixed(1) + "%";
+        }
+
+        probabilities.forEach((probability) => {
+          probability.addEventListener("input", updateResult);
         });
-        result.textContent = (product * 100).toFixed(1) + '%';
-      }
-      
-      probabilities.forEach(probability => {
-        probability.addEventListener('input', updateResult);
-      });
-      
-      updateResult();
-    </script>
 
-    <footer>Authored by Bing</footer>
+        updateResult();
+      </script>
+    </div>
   </body>
 </html>

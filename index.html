@@ -56,6 +56,15 @@
         display: block;
         margin: 20px auto;
       }
+      @media (max-width: 600px) {
+        .wrapper {
+          width: 90%;
+        }
+        canvas {
+          width: 100% !important;
+          height: auto !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -91,7 +100,8 @@
       <div class="container">
         <div class="element">
           <span class="title"
-            >AGI inference costs drop below $25/hr (determined by above)</span>
+            >AGI inference costs drop below $25/hr (determined by above)</span
+          >
           <input
             type="range"
             id="slider3"
@@ -108,7 +118,9 @@
           <span class="percentage">60%</span>
         </div>
         <div class="element">
-          <span class="title">We massively scale production of chips and power</span>
+          <span class="title"
+            >We massively scale production of chips and power</span
+          >
           <input type="range" min="0" max="100" value="46" />
           <span class="percentage">46%</span>
         </div>
@@ -123,7 +135,9 @@
           <span class="percentage">90%</span>
         </div>
         <div class="element">
-          <span class="title">We avoid derailment from wars (e.g., China invades Taiwan)</span>
+          <span class="title"
+            >We avoid derailment from wars (e.g., China invades Taiwan)</span
+          >
           <input type="range" min="0" max="100" value="70" />
           <span class="percentage">70%</span>
         </div>
@@ -264,15 +278,20 @@
         let currentCanvas = null;
         let currentData = null;
 
+        function getCanvasScaleFactor(canvas) {
+          return canvas.clientWidth / canvas.width;
+        }
+
         function addEventListeners(canvas, ctx, data, barHeight) {
           canvas.addEventListener("mousedown", function (e) {
             isDragging = true;
             currentCanvas = canvas;
             currentData = data;
 
-            // Get mouse position
+            // Get mouse position and scale it based on the canvas size
             const rect = canvas.getBoundingClientRect();
-            const mouseY = e.clientY - rect.top;
+            const scaleFactor = getCanvasScaleFactor(canvas);
+            const mouseY = (e.clientY - rect.top) / scaleFactor;
 
             // Determine which bar is being dragged
             for (let i = 0; i < data[0].length; i++) {
@@ -293,9 +312,10 @@
               currentCanvas === canvas &&
               currentData === data
             ) {
-              // Get mouse position
+              // Get mouse position and scale it based on the canvas size
               const rect = canvas.getBoundingClientRect();
-              const mouseX = e.clientX - rect.left;
+              const scaleFactor = getCanvasScaleFactor(canvas);
+              const mouseX = (e.clientX - rect.left) / scaleFactor;
 
               // Update probability
               data[1][dragIndex] = (mouseX - 160) / (canvas.width - 200);
@@ -325,6 +345,78 @@
           });
 
           canvas.addEventListener("mouseup", function (e) {
+            isDragging = false;
+            dragIndex = null;
+            currentCanvas = null;
+            currentData = null;
+          });
+
+          // Add touch event listeners
+          canvas.addEventListener("touchstart", function (e) {
+            e.preventDefault();
+            isDragging = true;
+            currentCanvas = canvas;
+            currentData = data;
+
+            // Get touch position and scale it based on the canvas size
+            const rect = canvas.getBoundingClientRect();
+            const scaleFactor = getCanvasScaleFactor(canvas);
+            const touchY = (e.touches[0].clientY - rect.top) / scaleFactor;
+
+            // Determine which bar is being dragged
+            for (let i = 0; i < data[0].length; i++) {
+              if (
+                touchY > i * (canvas.height / data[0].length) &&
+                touchY < (i + 1) * (canvas.height / data[0].length)
+              ) {
+                dragIndex = i;
+                break;
+              }
+            }
+          });
+
+          canvas.addEventListener("touchmove", function (e) {
+            e.preventDefault();
+            if (
+              isDragging &&
+              dragIndex !== null &&
+              currentCanvas === canvas &&
+              currentData === data
+            ) {
+              // Get touch position and scale it based on the canvas size
+              const rect = canvas.getBoundingClientRect();
+              const scaleFactor = getCanvasScaleFactor(canvas);
+              const touchX = (e.touches[0].clientX - rect.left) / scaleFactor;
+
+              // Update probability
+              data[1][dragIndex] = (touchX - 160) / (canvas.width - 200);
+
+              // Disallow probabilities from going below 0 or above 1
+              if (data[1][dragIndex] < 0) {
+                data[1][dragIndex] = 0;
+              } else if (data[1][dragIndex] > 1) {
+                data[1][dragIndex] = 1;
+              }
+
+              // Normalize probabilities
+              let totalProbability = 0;
+              for (let i = 0; i < data[1].length; i++) {
+                totalProbability += data[1][i];
+              }
+
+              for (let i = 0; i < data[1].length; i++) {
+                data[1][i] /= totalProbability;
+              }
+
+              // Redraw chart
+              drawChart(canvas, ctx, data, barHeight);
+              updateSlider3();
+              updateResult();
+            }
+          });
+
+          canvas.addEventListener("touchend", function (e) {
+            e.preventDefault();
             isDragging = false;
             dragIndex = null;
             currentCanvas = null;

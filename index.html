@@ -12,14 +12,21 @@
       .chart-container {
         display: block;
         color: #eee;
+        margin-bottom: 1em;
       }
       body {
         background-color: #111;
         color: #eee;
         font-family: sans-serif;
+        font-size: 1.25em;
       }
       h1 {
         text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+      p {
+        margin-bottom: 20px;
       }
       .container {
         display: flex;
@@ -31,22 +38,39 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
       }
       .element .title {
-        flex-basis: 70%;
+        flex-basis: 50%;
       }
       .element input[type="range"] {
-        flex-basis: 20%;
+        flex-basis: 30%;
       }
       .element .percentage {
         flex-basis: 10%;
         text-align: right;
+        font-size: 1.5em;
       }
+      #result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#result-label {
+  text-align: left;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  font-weight: bold;
+}
       #result {
-        font-size: 2em;
-        text-align: center;
-        width: 100%;
+        font-size: 2.5em;
+        flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+        margin-bottom: 20px;
       }
       footer {
         text-align: center;
@@ -55,6 +79,16 @@
       .reset-button {
         display: block;
         margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #07f;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .reset-button:hover {
+        background-color: #0056b3;
       }
       @media (max-width: 600px) {
         .wrapper {
@@ -69,13 +103,17 @@
     </style>
   </head>
   <body>
+  <body>
     <div class="wrapper">
       <h1>Forecasting AGI</h1>
       <p>
         For AGI to do most human work for &lt;$25/hr by 2043, many things must
-        happen. Use this interactive web app to forecast individual events and
+        happen.
+      
+      </p><p> Use this interactive web app to forecast individual events and
         see what they imply about the likelihood of transformative AGI by 2043.
       </p>
+      <hr>
       <div class="container">
         <div class="element">
           <span class="title">We invent algorithms for transformative AGI</span>
@@ -153,10 +191,12 @@
           <span class="percentage">95%</span>
         </div>
       </div>
-      <p style="text-align: center">
-        Joint probability: <span id="result">0.3%</span>
-      </p>
-      <button id="resetButton" class="reset-button">Reset</button>
+      <hr>
+      <div id="result-row">
+        <span id="result-label">Probability of transformative AGI by 2043:</span>
+        <span id="result">0.4%</span>
+      </div>
+      <button id="resetButton" class="reset-button">Reset all</button>
 
       <script>
         "use strict";
@@ -164,10 +204,10 @@
         // Set up canvas
         const canvas1 = document.getElementById("chart1");
         const ctx1 = canvas1.getContext("2d");
-        ctx1.font = "14px Arial";
+        ctx1.font = "16px Arial";
         const canvas2 = document.getElementById("chart2");
         const ctx2 = canvas2.getContext("2d");
-        ctx2.font = "14px Arial";
+        ctx2.font = "16px Arial";
 
         // Set up data
         let data1 = [
